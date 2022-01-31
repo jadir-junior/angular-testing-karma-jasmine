@@ -1,0 +1,14 @@
+<p
+  *ngIf="
+    internatControl &&
+    internatControl.invalid &&
+    (internatControl.touched || internatControl.dirty)
+  "
+  role="alert"
+  data-testid="control-error"
+>
+  <span aria-hidden="true">❗ </span>
+  <ng-container
+    *ngTemplateOutlet="template; context: templateContext"
+  ></ng-container>
+</p>

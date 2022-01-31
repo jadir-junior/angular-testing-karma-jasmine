@@ -7,7 +7,7 @@ import { MockComponent } from 'ng-mocks';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { findComponent } from './utils/testing-helper';
 
-describe('AppComponent', () => {
+xdescribe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
   let counter: CounterComponent;

@@ -1,4 +1,4 @@
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { click, expectText, setFieldValue } from 'src/app/utils/testing-helper';
 
@@ -48,24 +48,37 @@ describe('ServiceCounterComponent', () => {
     });
   });
 
-  describe('ServiceCounterComponent: unit test', () => {
-    const currentCount = 123;
+  describe('ServiceCounterComponent: unit test with minimal Service logic', () => {
+    const newCount = 456;
 
     let component: ServiceCounterComponent;
     let fixture: ComponentFixture<ServiceCounterComponent>;
-    let fakeCounterService: CounterService;
+
+    let fakeCount$: BehaviorSubject<number>;
+    let fakeCounterService: Pick<CounterService, keyof CounterService>;
 
     beforeEach(async () => {
-      // Create a fake
-      fakeCounterService = jasmine.createSpyObj<CounterService>(
-        'CounterService',
-        {
-          getCount: of(currentCount),
-          increment: undefined,
-          decrement: undefined,
-          reset: undefined,
-        }
-      );
+      fakeCount$ = new BehaviorSubject(0);
+
+      fakeCounterService = {
+        getCount(): Observable<number> {
+          return fakeCount$;
+        },
+        increment(): void {
+          fakeCount$.next(1);
+        },
+        decrement(): void {
+          fakeCount$.next(-1);
+        },
+        reset(): void {
+          fakeCount$.next(Number(newCount));
+        },
+      };
+
+      spyOn(fakeCounterService, 'getCount').and.callThrough();
+      spyOn(fakeCounterService, 'increment').and.callThrough();
+      spyOn(fakeCounterService, 'decrement').and.callThrough();
+      spyOn(fakeCounterService, 'reset').and.callThrough();
 
       await TestBed.configureTestingModule({
         declarations: [ServiceCounterComponent],
@@ -78,25 +91,35 @@ describe('ServiceCounterComponent', () => {
       fixture.detectChanges();
     });
 
-    it('shows the count', () => {
-      expectText(fixture, 'count', String(currentCount));
+    it('shows the start count', () => {
+      expectText(fixture, 'count', '0');
       expect(fakeCounterService.getCount).toHaveBeenCalled();
     });
 
     it('increments the count', () => {
       click(fixture, 'increment-button');
+      fakeCount$.next(1);
+      fixture.detectChanges();
+
+      expectText(fixture, 'count', '1');
       expect(fakeCounterService.increment).toHaveBeenCalled();
     });
 
     it('decrements the count', () => {
       click(fixture, 'decrement-button');
+      fakeCount$.next(-1);
+      fixture.detectChanges();
+
+      expectText(fixture, 'count', '-1');
       expect(fakeCounterService.decrement).toHaveBeenCalled();
     });
 
     it('resets the count', () => {
-      const newCount = 456;
       setFieldValue(fixture, 'reset-input', String(newCount));
       click(fixture, 'reset-button');
+      fixture.detectChanges();
+
+      expectText(fixture, 'count', String(newCount));
       expect(fakeCounterService.reset).toHaveBeenCalledWith(newCount);
     });
   });

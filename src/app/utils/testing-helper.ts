@@ -87,3 +87,13 @@ export function findComponent<T>(
 ): DebugElement {
   return queryByCss(fixture, selector);
 }
+
+export function checkField<T>(
+  fixture: ComponentFixture<T>,
+  testId: string,
+  checked: boolean
+): void {
+  const { nativeElement } = findEl(fixture, testId);
+  nativeElement.checked = checked;
+  dispatchFakeEvent(nativeElement, 'change');
+}
