@@ -1,16 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { By } from '@angular/platform-browser';
+import { CounterComponent } from './components/counter/counter.component';
+import { MockComponent } from 'ng-mocks';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { findComponent } from './utils/testing-helper';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
+  let counter: CounterComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      declarations: [AppComponent, MockComponent(CounterComponent)],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -19,6 +23,11 @@ describe('AppComponent', () => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    const counterEl = fixture.debugElement.query(
+      By.directive(CounterComponent)
+    );
+    counter = counterEl.componentInstance;
   });
 
   it('renders without errors', () => {
@@ -26,23 +35,19 @@ describe('AppComponent', () => {
   });
 
   it('renders an independent counter', () => {
-    const counter = findComponent(fixture, 'app-counter');
     expect(counter).toBeTruthy();
   });
 
   it('passes a start count', () => {
-    const counter = findComponent(fixture, 'app-counter');
-    expect(counter.properties['startCount']).toBe(5);
+    expect(counter.startCount).toBe(5);
   });
 
   it('listens for count changes', () => {
-    // Arrange
     spyOn(console, 'log');
 
     // Act
-    const counter = findComponent(fixture, 'app-counter');
     const count = 5;
-    counter.triggerEventHandler('countChange', count);
+    counter.countChange.emit(5);
 
     // Assert
     expect(console.log).toHaveBeenCalledWith(
