@@ -1,1 +1,30 @@
-<p>service-counter works!</p>
+<div class="wrapper-count">
+  <div class="wrapper-count-buttons">
+    <div>
+      <strong data-testid="count" class="count">{{ count$ | async }}</strong>
+    </div>
+    <div>
+      <button
+        class="button"
+        (click)="increment()"
+        data-testid="increment-button"
+      >
+        +
+      </button>
+      <button
+        class="button"
+        (click)="decrement()"
+        data-testid="decrement-button"
+        style="margin-left: 16px"
+      >
+        -
+      </button>
+    </div>
+  </div>
+  <div class="wrapper-input">
+    <input class="input" type="number" #resetInput data-testid="reset-input" />
+    <button (click)="reset(resetInput.value)" data-testid="reset-button">
+      reset
+    </button>
+  </div>
+</div>
