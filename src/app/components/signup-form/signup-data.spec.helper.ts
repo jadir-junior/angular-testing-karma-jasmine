@@ -27,3 +27,14 @@ export const signupData: SignupData = {
   },
   tos: true,
 };
+
+export const requiredFields = [
+  'username',
+  'email',
+  'name',
+  'addressLine2',
+  'city',
+  'postcode',
+  'country',
+  'tos',
+];

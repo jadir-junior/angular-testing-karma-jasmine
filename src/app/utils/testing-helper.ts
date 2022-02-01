@@ -97,3 +97,7 @@ export function checkField<T>(
   nativeElement.checked = checked;
   dispatchFakeEvent(nativeElement, 'change');
 }
+
+export function markFieldAsTouched(element: DebugElement) {
+  dispatchFakeEvent(element.nativeElement, 'blur');
+}

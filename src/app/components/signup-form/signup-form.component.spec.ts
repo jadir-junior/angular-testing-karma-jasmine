@@ -18,13 +18,16 @@ import {
   password,
   postcode,
   region,
+  requiredFields,
   signupData,
   username,
 } from './signup-data.spec.helper';
 import {
   checkField,
+  click,
   expectText,
   findEl,
+  markFieldAsTouched,
   setFieldValue,
 } from 'src/app/utils/testing-helper';
 import { of, throwError } from 'rxjs';
@@ -54,10 +57,12 @@ describe('SignupFormComponent', () => {
     signupServiceReturnValues?: jasmine.SpyObjMethodNames<SignupService>
   ) => {
     signupService = jasmine.createSpyObj<SignupService>('SignupService', {
+      // Successful response per default
       isUsernameTaken: of(false),
       isEmailTaken: of(false),
       getPasswordStrength: of(strongPassword),
       signup: of({ success: true }),
+      // Overwrite with given return values
       ...signupServiceReturnValues,
     });
 
@@ -148,4 +153,148 @@ describe('SignupFormComponent', () => {
     expect(signupService.getPasswordStrength).toHaveBeenCalledWith(password);
     expect(signupService.signup).toHaveBeenCalledWith(signupData);
   }));
+
+  it('marks fields as required', async () => {
+    await setup();
+
+    // Mark required fields as touched
+    requiredFields.forEach((testId) => {
+      markFieldAsTouched(findEl(fixture, testId));
+    });
+    fixture.detectChanges();
+
+    requiredFields.forEach((testId) => {
+      const el = findEl(fixture, testId);
+      // Check aria-errormessage attribute
+      const errormessageId = el.attributes['aria-errormessage'];
+
+      if (!errormessageId) {
+        throw new Error(`Error message id for ${testId} not present`);
+      }
+
+      // Check element with error message
+      const errormessageEl = document.getElementById(errormessageId);
+      if (!errormessageEl) {
+        throw new Error(`Error message element for ${testId} not found`);
+      }
+
+      // Check aria-required attribute
+      expect(el.attributes['aria-required']).toBe(
+        'true',
+        `${testId} must be marked as aria-required`
+      );
+      if (errormessageId === 'tos-errors') {
+        expect(errormessageEl.textContent).toContain(
+          'Please accept the Terms and Services'
+        );
+      } else {
+        expect(errormessageEl.textContent).toContain('must be given');
+      }
+    });
+  });
+
+  it('fails if the username is taken', fakeAsync(async () => {
+    await setup({
+      isUsernameTaken: of(true),
+    });
+
+    fillForm();
+
+    // wait for async validators
+    tick(1000);
+    fixture.detectChanges();
+
+    expect(findEl(fixture, 'submit').properties['disabled']).toBe(true);
+
+    findEl(fixture, 'form').triggerEventHandler('submit', {});
+
+    expect(signupService.isUsernameTaken).toHaveBeenCalledWith(username);
+    expect(signupService.isEmailTaken).toHaveBeenCalledWith(email);
+    expect(signupService.getPasswordStrength).toHaveBeenCalledWith(password);
+    expect(signupService.signup).not.toHaveBeenCalled();
+  }));
+
+  it('fails if the email is taken', fakeAsync(async () => {
+    await setup({
+      isEmailTaken: of(true),
+    });
+
+    fillForm();
+
+    // wait for async validators
+    tick(1000);
+    fixture.detectChanges();
+
+    expect(findEl(fixture, 'submit').properties['disabled']).toBe(true);
+
+    findEl(fixture, 'form').triggerEventHandler('submit', {});
+
+    expect(signupService.isUsernameTaken).toHaveBeenCalledWith(username);
+    expect(signupService.isEmailTaken).toHaveBeenCalledWith(email);
+    expect(signupService.getPasswordStrength).toHaveBeenCalledWith(password);
+    expect(signupService.signup).not.toHaveBeenCalled();
+  }));
+
+  it('fails if the password is too weak', fakeAsync(async () => {
+    await setup({
+      getPasswordStrength: of(weakPassword),
+    });
+
+    fillForm();
+
+    // wait for async validators
+    tick(1000);
+    fixture.detectChanges();
+
+    expect(findEl(fixture, 'submit').properties['disabled']).toBe(true);
+
+    findEl(fixture, 'form').triggerEventHandler('submit', {});
+
+    expect(signupService.isUsernameTaken).toHaveBeenCalledWith(username);
+    expect(signupService.isEmailTaken).toHaveBeenCalledWith(email);
+    expect(signupService.getPasswordStrength).toHaveBeenCalledWith(password);
+    expect(signupService.signup).not.toHaveBeenCalled();
+  }));
+
+  it('requires address line 1 for business and non-profit plans', async () => {
+    await setup();
+
+    // Initial state (personal plan)
+    const addressLine1El = findEl(fixture, 'addressLine1');
+    expect('ng-invalid' in addressLine1El.classes).toBe(false);
+    expect('aria-required' in addressLine1El.attributes).toBe(false);
+
+    // Change the to business
+    checkField(fixture, 'plan-business', true);
+    fixture.detectChanges();
+
+    expect(addressLine1El.attributes['aria-required']).toBe('true');
+    expect(addressLine1El.classes['ng-invalid']).toBe(true);
+
+    // Change plan to non-profit
+    checkField(fixture, 'plan-non-profit', true);
+    fixture.detectChanges();
+
+    expect(addressLine1El.attributes['aria-required']).toBe('true');
+    expect(addressLine1El.classes['ng-invalid']).toBe(true);
+  });
+
+  it('toogles the password display', async () => {
+    await setup();
+
+    setFieldValue(fixture, 'password', 'top secret');
+
+    const passwordEl = findEl(fixture, 'password');
+    expect(passwordEl.attributes['type']).toBe('password');
+
+    click(fixture, 'show-password');
+    fixture.detectChanges();
+
+    expect(passwordEl.attributes['type']).toBe('text');
+
+    click(fixture, 'show-password');
+    fixture.detectChanges();
+
+    expect(passwordEl.attributes['type']).toBe('password');
+  });
 });
