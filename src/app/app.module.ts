@@ -11,6 +11,10 @@ import { NgModule } from '@angular/core';
 import { NgrxCounterComponent } from './components/ngrx-counter/ngrx-counter.component';
 import { ServiceCounterComponent } from './components/service-counter/service-counter.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
+import { FullPhotoComponent } from './components/full-photo/full-photo.component';
+import { FlickrSearchComponent } from './components/flickr-search/flickr-search.component';
+import { SearchFormComponent } from './components/search-form/search-form.component';
+import { PhotoListComponent } from './components/photo-list/photo-list.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +25,10 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
     SignupFormComponent,
     ControlErrorsComponent,
     ErrorMessageDirective,
+    FullPhotoComponent,
+    FlickrSearchComponent,
+    SearchFormComponent,
+    PhotoListComponent,
   ],
   imports: [
     BrowserModule,
