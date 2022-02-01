@@ -12,3 +12,18 @@ export const photo1: IPhoto = {
 };
 
 export const photo1Link = `https://www.flickr.com/photos/${photo1.owner}/${photo1.id}`;
+
+export const photo2: IPhoto = {
+  id: '50178927498',
+  title: 'Blauflügel-Prachtlibelle (Calopteryx virgo) (2)',
+  url_q: 'https://live.staticflickr.com/65535/50178927498_44162cb1a0_q.jpg',
+  url_m: 'https://live.staticflickr.com/65535/50178927498_44162cb1a0_m.jpg',
+  datetaken: '2020-06-21T15:16:17-08:00',
+  owner: '12639178@N07',
+  ownername: 'naturgucker.de',
+  tags: 'ngid657236235 calopteryxvirgo blauflügelprachtlibelle',
+};
+
+export const photo2Link = `https://www.flickr.com/photos/${photo2.owner}/${photo2.id}`;
+
+export const photos: IPhoto[] = [photo1, photo2];

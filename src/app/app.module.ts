@@ -15,6 +15,7 @@ import { FullPhotoComponent } from './components/full-photo/full-photo.component
 import { FlickrSearchComponent } from './components/flickr-search/flickr-search.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { PhotoListComponent } from './components/photo-list/photo-list.component';
+import { PhotoItemComponent } from './components/photo-item/photo-item.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { PhotoListComponent } from './components/photo-list/photo-list.component
     FlickrSearchComponent,
     SearchFormComponent,
     PhotoListComponent,
+    PhotoItemComponent,
   ],
   imports: [
     BrowserModule,
