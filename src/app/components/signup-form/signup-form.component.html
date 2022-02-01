@@ -5,58 +5,89 @@
     <legend>Choose your plan</legend>
 
     <div>
-      <ul>
-        <li>
-          <label>
-            <input
-              type="radio"
-              formControlName="plan"
-              name="plan"
-              [value]="PERSONAL"
-              data-testid="plan-personal"
-            />
-            <div>
-              <p><strong>Personal</strong></p>
-              <p>$ 1 per month</p>
-              <p>Free 30 day trial</p>
-              <p>No credit card requited</p>
+      <ul class="flex radio-toolbar">
+        <li class="card">
+          <div>
+            <p class="card-header text-center"><strong>Personal</strong></p>
+            <p class="text-center">
+              <span class="plan-currency">$</span
+              ><span class="plan-price">1</span
+              ><span class="plan-month">/ Mon</span>
+            </p>
+            <ul>
+              <li>Free 30 Day Trial</li>
+              <li>No Credit Card Requited</li>
+              <li class="plan-disabled">Free Forever</li>
+              <li class="plan-disabled">
+                For Students, Schools and Non-profit Organizations
+              </li>
+            </ul>
+            <div class="flex-center">
+              <input
+                id="radioPlanPersonal"
+                type="radio"
+                formControlName="plan"
+                name="plan"
+                [value]="PERSONAL"
+                data-testid="plan-personal"
+              />
+              <label for="radioPlanPersonal">Select</label>
             </div>
-          </label>
+          </div>
         </li>
-        <li>
-          <label>
+        <li class="card">
+          <div>
+            <p class="card-header text-center"><strong>Business</strong></p>
+            <p class="text-center">
+              <span class="plan-currency">$</span>
+              <span class="plan-price">10</span>
+              <span class="plan-month">/ Mon</span>
+            </p>
+            <ul>
+              <li>Free 30 Day Trial</li>
+              <li>No Credit Card Requited</li>
+              <li class="plan-disabled">Free Forever</li>
+              <li class="plan-disabled">
+                For Students, Schools and Non-profit Organizations
+              </li>
+            </ul>
+          </div>
+          <div class="flex-center">
             <input
               type="radio"
               formControlName="plan"
               name="plan"
               [value]="BUSINESS"
               data-testid="plan-business"
+              id="radioPlanBusiness"
             />
-            <div>
-              <p><strong>Business</strong></p>
-              <p>$ 10 per month</p>
-              <p>Free 30 day trial</p>
-              <p>No credit card requited</p>
-            </div>
-          </label>
+            <label for="radioPlanBusiness">Select</label>
+          </div>
         </li>
-        <li>
-          <label>
+        <li class="card">
+          <div>
+            <p class="card-header text-center">
+              <strong>Education & Non-profit</strong>
+            </p>
+            <p class="text-center"><span class="plan-price">FREE</span></p>
+            <ul>
+              <li>Free 30 Day Trial</li>
+              <li>No Credit Card Requited</li>
+              <li>Free Forever</li>
+              <li>For Students, Schools and Non-profit Organizations</li>
+            </ul>
+          </div>
+          <div class="flex-center">
             <input
+              id="radioPlanNonFit"
               type="radio"
               formControlName="plan"
               name="plan"
               [value]="NON_PROFIT"
               data-testid="plan-non-profit"
             />
-            <div>
-              <p>
-                <strong>Education & <br />Non-profit</strong>
-              </p>
-              <p>Free forever</p>
-              <p>For students, schools and non-profit organizations</p>
-            </div>
-          </label>
+            <label for="radioPlanNonFit">Select</label>
+          </div>
         </li>
       </ul>
     </div>
