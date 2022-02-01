@@ -32,6 +32,7 @@ import {
 } from 'src/app/utils/testing-helper';
 import { of, throwError } from 'rxjs';
 
+import { BrowserTestingModule } from '@angular/platform-browser/testing';
 import { ControlErrorsComponent } from '../control-errors/control-errors.component';
 import { ErrorMessageDirective } from 'src/app/directives/error-message.directive';
 import { ReactiveFormsModule } from '@angular/forms';

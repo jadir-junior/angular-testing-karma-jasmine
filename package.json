@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test --browsers ChromeHeadless --code-coverage --watch=false",
+    "test:dev": "ng test",
+    "test:accessibility": "pa11y http://localhost:4200/",
+    "test:aceessibility:ci": "pally-ci"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +38,9 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "ng-mocks": "^13.0.0",
+    "pa11y": "^6.1.1",
+    "pa11y-ci": "^3.0.1",
+    "start-server-and-test": "^1.14.0",
     "typescript": "~4.5.2"
   }
 }
