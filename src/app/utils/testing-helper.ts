@@ -101,3 +101,10 @@ export function checkField<T>(
 export function markFieldAsTouched(element: DebugElement) {
   dispatchFakeEvent(element.nativeElement, 'blur');
 }
+
+export function expectContent<T>(
+  fixture: ComponentFixture<T>,
+  text: string
+): void {
+  expect(fixture.nativeElement.textContent).toBe(text);
+}
