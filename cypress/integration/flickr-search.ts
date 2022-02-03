@@ -1,31 +1,36 @@
-describe('Flickr search', () => {
+import { FlickrSearch } from 'cypress/pages/flickr-search.page';
+
+describe('Flickr search (with page object)', () => {
   const SEARCH_TERM = 'flower';
 
+  let page: FlickrSearch;
+
   beforeEach(() => {
-    cy.visit('/flickr');
+    page = new FlickrSearch();
+    page.visit();
   });
 
   it('searches for a term', () => {
-    cy.byTestId('search-term-input').first().clear().type(SEARCH_TERM);
-    cy.byTestId('submit-search').first().click();
+    page.searchFor(SEARCH_TERM);
 
-    cy.byTestId('photo-item-link')
+    page
+      .photoItemLinks()
       .should('have.length', 15)
       .each((link) => {
         expect(link.attr('href')).to.contain('https://www.flickr.com/photos/');
       });
 
-    cy.byTestId('photo-item-image').should('have.length', 15);
+    page.photoItemImages().should('have.length', 15);
   });
 
-  it.only('shows the full photo', () => {
-    cy.byTestId('search-term-input').first().clear().type(SEARCH_TERM);
-    cy.byTestId('submit-search').first().click();
-    cy.byTestId('photo-item-link').first().click();
+  it('shows the full photo', () => {
+    page.searchFor(SEARCH_TERM);
 
-    cy.byTestId('full-photo').should('contain', SEARCH_TERM);
-    cy.byTestId('full-photo-title').should('not.have.text', '');
-    cy.byTestId('full-photo-tags').should('not.have.text', '');
-    cy.byTestId('full-photo-image').should('exist');
+    page.photoItemImages().first().click();
+
+    page.fullPhoto().should('contain', SEARCH_TERM);
+    page.fullPhotoTitle().should('not.have.text', '');
+    page.fullPhotoTags().should('not.have.text', '');
+    page.fullPhotoImage().should('exist');
   });
 });
