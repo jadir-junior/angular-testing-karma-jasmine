@@ -23,6 +23,7 @@ import { ServiceCounterComponent } from './components/service-counter/service-co
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { ThresholdWarningDirective } from './directives/threshold-warning.directive';
 import { TranslatePipe } from './pipes/translate.pipe';
+import { PageFlickrComponent } from './pages/page-flickr/page-flickr.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { TranslatePipe } from './pipes/translate.pipe';
     PagenotfoundComponent,
     PageCounterComponent,
     PageSignupComponent,
+    PageFlickrComponent,
   ],
   imports: [
     BrowserModule,
