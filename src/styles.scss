@@ -7,3 +7,7 @@ body {
   margin: 0;
   font-family: "Poppins", Helvetica, sans-serif;
 }
+
+input[type="number"].overThreshold {
+  background-color: #fe9;
+}
