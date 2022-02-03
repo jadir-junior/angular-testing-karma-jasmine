@@ -2,11 +2,22 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 
+export function testIdSelector(testId: string): string {
+  return `[data-testid="${testId}"]`;
+}
+
 export function findEl<T>(
   fixture: ComponentFixture<T>,
   testId: string
 ): DebugElement {
-  return fixture.debugElement.query(By.css(`[data-testid="${testId}"]`));
+  return fixture.debugElement.query(By.css(testIdSelector(testId)));
+}
+
+export function findEls<T>(
+  fixture: ComponentFixture<T>,
+  testId: string
+): DebugElement[] {
+  return fixture.debugElement.queryAll(By.css(testIdSelector(testId)));
 }
 
 export function click<T>(fixture: ComponentFixture<T>, testId: string): void {
@@ -107,4 +118,14 @@ export function expectContent<T>(
   text: string
 ): void {
   expect(fixture.nativeElement.textContent).toBe(text);
+}
+
+export function expectItems(
+  elements: DebugElement[],
+  expectedItems: number[]
+): void {
+  elements.forEach((element, index) => {
+    const actualText = element.nativeElement.textContent.trim();
+    expect(actualText).toBe(String(expectedItems[index]));
+  });
 }

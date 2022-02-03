@@ -19,6 +19,7 @@ import { PhotoItemComponent } from './components/photo-item/photo-item.component
 import { GreetPipe } from './pipes/greet.pipe';
 import { TranslatePipe } from './pipes/translate.pipe';
 import { ThresholdWarningDirective } from './directives/threshold-warning.directive';
+import { PaginateDirective } from './directives/paginate.directive';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ThresholdWarningDirective } from './directives/threshold-warning.direct
     GreetPipe,
     TranslatePipe,
     ThresholdWarningDirective,
+    PaginateDirective,
   ],
   imports: [
     BrowserModule,
