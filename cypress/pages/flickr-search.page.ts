@@ -31,4 +31,8 @@ export class FlickrSearch {
   public fullPhotoImage(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.byTestId('full-photo-image');
   }
+
+  public fullPhotoLink(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.byTestId('full-photo-link');
+  }
 }

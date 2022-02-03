@@ -27,3 +27,5 @@ export const photo2: IPhoto = {
 export const photo2Link = `https://www.flickr.com/photos/${photo2.owner}/${photo2.id}`;
 
 export const photos: IPhoto[] = [photo1, photo2];
+
+export const searchTerm = 'calopteryx';
