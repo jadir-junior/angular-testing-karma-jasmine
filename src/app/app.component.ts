@@ -5,8 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  handleCountChange(count: number): void {
-    console.log('countChange event from CounterComponent', count);
-  }
-}
+export class AppComponent {}
